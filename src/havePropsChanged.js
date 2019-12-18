@@ -1,4 +1,4 @@
-module.exports = function havePropsChanged(prevProps, nextProps, keys) {
+export default function havePropsChanged(prevProps, nextProps, keys) {
   const changedProps = []
   keys.forEach(key => {
     if (prevProps[key] != nextProps[key]) {

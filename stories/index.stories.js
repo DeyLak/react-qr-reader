@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { storiesOf, action } from "@storybook/react";
+import { storiesOf } from "@storybook/react";
+import { action } from '@storybook/addon-actions';
 import Reader from "../lib";
 
 class Wrapper extends Component {
@@ -40,6 +41,7 @@ class Wrapper extends Component {
           <Reader
             onError={action("Error")}
             onScan={action("Scan")}
+            onScan={action("Scan")}
             onLoad={action("Load")}
             onImageLoad={action("ImageLoad")}
             ref="reader"
@@ -48,6 +50,10 @@ class Wrapper extends Component {
             maxImageSize={1000}
             delay={this.state.delay}
             className="reader-container"
+            style={{
+              width: 300,
+              height: 500,
+            }}
           />
         )}
         {legacyMode && (

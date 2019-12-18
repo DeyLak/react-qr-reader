@@ -1,4 +1,4 @@
-const { NoVideoInputDevicesError } = require('./errors')
+import { NoVideoInputDevicesError } from './errors'
 
 function defaultDeviceIdChooser(filteredDevices, videoDevices, facingMode) {
   if(filteredDevices.length > 0){
@@ -10,11 +10,11 @@ function defaultDeviceIdChooser(filteredDevices, videoDevices, facingMode) {
   return videoDevices[1].deviceId
 }
 
-const getFacingModePattern = (facingMode) => facingMode == 'environment'
+export const getFacingModePattern = (facingMode) => facingMode == 'environment'
   ? /rear|back|environment/ig
   : /front|user|face/ig
 
-function getDeviceId(facingMode, chooseDeviceId = defaultDeviceIdChooser) {
+export function getDeviceId(facingMode, chooseDeviceId = defaultDeviceIdChooser) {
   // Get manual deviceId from available devices.
   return new Promise((resolve, reject) => {
     let enumerateDevices
@@ -44,5 +44,3 @@ function getDeviceId(facingMode, chooseDeviceId = defaultDeviceIdChooser) {
     })
   })
 }
-
-module.exports = { getDeviceId, getFacingModePattern }

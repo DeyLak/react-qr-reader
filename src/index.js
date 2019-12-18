@@ -1,12 +1,11 @@
-const React = require('react')
-const { Component } = React
-const PropTypes = require('prop-types')
-const { getDeviceId, getFacingModePattern } = require('./getDeviceId')
-const havePropsChanged = require('./havePropsChanged')
-const createBlob = require('./createBlob')
-
 // Require adapter to support older browser implementations
-require('webrtc-adapter')
+import 'webrtc-adapter'
+
+import React, { Component } from'react'
+import PropTypes from 'prop-types'
+import { getDeviceId, getFacingModePattern } from'./getDeviceId'
+import havePropsChanged from'./havePropsChanged'
+import createBlob from'./createBlob'
 
 // Inline worker.js as a string value of workerBlob.
 // eslint-disable-next-line
@@ -17,7 +16,7 @@ let workerBlob = createBlob([__inline('../lib/worker.js')], {
 // Props that are allowed to change dynamicly
 const propsKeys = ['delay', 'legacyMode', 'facingMode']
 
-module.exports = class Reader extends Component {
+class Reader extends Component {
   static propTypes = {
     onScan: PropTypes.func.isRequired,
     onError: PropTypes.func.isRequired,
@@ -71,34 +70,6 @@ module.exports = class Reader extends Component {
       this.initiate()
     } else {
       this.initiateLegacyMode()
-    }
-  }
-  componentWillReceiveProps(nextProps) {
-    // React according to change in props
-    const changedProps = havePropsChanged(this.props, nextProps, propsKeys)
-
-    for (const prop of changedProps) {
-      if (prop == 'facingMode') {
-        this.clearComponent()
-        this.initiate(nextProps)
-        break
-      } else if (prop == 'delay') {
-        if (this.props.delay == false && !nextProps.legacyMode) {
-          this.timeout = setTimeout(this.check, nextProps.delay)
-        }
-        if (nextProps.delay == false) {
-          clearTimeout(this.timeout)
-        }
-      } else if (prop == 'legacyMode') {
-        if (this.props.legacyMode && !nextProps.legacyMode) {
-          this.clearComponent()
-          this.initiate(nextProps)
-        } else {
-          this.clearComponent()
-          this.componentDidUpdate = this.initiateLegacyMode
-        }
-        break
-      }
     }
   }
   shouldComponentUpdate(nextProps, nextState) {
@@ -312,14 +283,15 @@ module.exports = class Reader extends Component {
       onImageLoad,
       legacyMode,
       showViewFinder,
-      facingMode
+      facingMode,
+      children,
     } = this.props
 
     const containerStyle = {
       overflow: 'hidden',
       position: 'relative',
       width: '100%',
-      paddingTop: '100%',
+      height: '100%',
     }
     const hiddenStyle = { display: 'none' }
     const previewStyle = {
@@ -341,24 +313,12 @@ module.exports = class Reader extends Component {
       objectFit: 'scale-down',
     }
 
-    const viewFinderStyle = {
-      top: 0,
-      left: 0,
-      zIndex: 1,
-      boxSizing: 'border-box',
-      border: '50px solid rgba(0, 0, 0, 0.3)',
-      boxShadow: 'inset 0 0 0 5px rgba(255, 0, 0, 0.5)',
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-    }
-
     return (
       <section className={className} style={style}>
         <section style={containerStyle}>
           {
             (!legacyMode && showViewFinder)
-            ? <div style={viewFinderStyle} />
+            ? children
             : null
           }
           {
@@ -384,3 +344,5 @@ module.exports = class Reader extends Component {
     )
   }
 }
+
+export default Reader

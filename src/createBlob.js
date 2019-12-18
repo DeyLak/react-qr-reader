@@ -1,7 +1,7 @@
 /**
  * From https://gist.github.com/nolanlawson/10340255
  */
-module.exports = function createBlob(parts, properties) {
+export default function createBlob(parts, properties) {
   parts = parts || [];
   properties = properties || {};
   try {
