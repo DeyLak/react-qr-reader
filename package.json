@@ -68,6 +68,7 @@
     "react-dom": "~16"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.8.3",
     "babel-preset-react-app": "^9.1.0",
     "jsqr": "^1.2.0",
     "prop-types": "^15.7.2",
