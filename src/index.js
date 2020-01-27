@@ -14,7 +14,7 @@ let workerBlob = createBlob([__inline('../lib/worker.js')], {
 })
 
 // Props that are allowed to change dynamicly
-const propsKeys = ['delay', 'legacyMode', 'facingMode']
+const propsKeys = ['delay', 'legacyMode', 'facingMode', 'children']
 
 class Reader extends Component {
   static propTypes = {
